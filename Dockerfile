@@ -1,9 +1,9 @@
 FROM python:3.9-slim
 
-# Prevent interactive prompts
+# Avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update system + install dependencies
+# Install system packages
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -12,17 +12,15 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
+# App directory banaye
 WORKDIR /app
 
-# Copy requirements
+# Python requirements install kare
 COPY requirements.txt .
-
-# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app files
+# Code copy kare
 COPY . .
 
-# Run the bot
+# Bot run command
 CMD ["python3", "main.py"]
