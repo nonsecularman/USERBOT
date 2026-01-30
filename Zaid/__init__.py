@@ -1,28 +1,18 @@
 import time
 from datetime import datetime
 from pyrogram import Client
+from aiohttp import ClientSession
+
 from config import (
-    API_ID,
-    API_HASH,
-    BOT_TOKEN,
-    OWNER_ID,
-    SUDO_USERS,
-    STRING_SESSION1,
-    STRING_SESSION2,
-    STRING_SESSION3,
-    STRING_SESSION4,
-    STRING_SESSION5,
-    STRING_SESSION6,
-    STRING_SESSION7,
-    STRING_SESSION8,
-    STRING_SESSION9,
-    STRING_SESSION10,
+    API_ID, API_HASH, BOT_TOKEN, OWNER_ID, SUDO_USERS,
+    STRING_SESSION1, STRING_SESSION2, STRING_SESSION3, STRING_SESSION4,
+    STRING_SESSION5, STRING_SESSION6, STRING_SESSION7, STRING_SESSION8,
+    STRING_SESSION9, STRING_SESSION10,
 )
 
 # ── GLOBALS ─────────────────────────────
 StartTime = time.time()
 START_TIME = datetime.now()
-
 CMD_HELP = {}
 clients = []
 ids = []
@@ -30,7 +20,10 @@ ids = []
 if OWNER_ID not in SUDO_USERS:
     SUDO_USERS.append(OWNER_ID)
 
-# ── BOT CLIENT (ONLY BOT TOKEN) ─────────
+# Backward compatibility
+SUDO_USER = SUDO_USERS
+
+# ── BOT CLIENT (BOT TOKEN ONLY) ─────────
 app = Client(
     "bot",
     api_id=API_ID,
@@ -39,7 +32,7 @@ app = Client(
     plugins=dict(root="Zaid/modules/bot"),
 )
 
-# ── USER CLIENTS (ONLY STRING SESSIONS) ──
+# ── USER CLIENTS (STRING SESSIONS ONLY) ──
 def add_client(name, session):
     clients.append(
         Client(
@@ -61,7 +54,18 @@ if STRING_SESSION7: add_client("user7", STRING_SESSION7)
 if STRING_SESSION8: add_client("user8", STRING_SESSION8)
 if STRING_SESSION9: add_client("user9", STRING_SESSION9)
 if STRING_SESSION10: add_client("user10", STRING_SESSION10)
-    
-# Backward compatibility
 
-SUDO_USER = SUDO_USERS
+# ── AIOHTTP SESSION (SAFE INIT) ─────────
+aiosession: ClientSession | None = None
+
+async def init_aiosession():
+    global aiosession
+    if aiosession is None or aiosession.closed:
+        aiosession = ClientSession()
+
+__all__ = [
+    "app", "clients", "ids", "CMD_HELP",
+    "StartTime", "START_TIME",
+    "SUDO_USERS", "SUDO_USER",
+    "aiosession", "init_aiosession",
+]
