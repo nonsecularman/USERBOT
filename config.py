@@ -1,12 +1,12 @@
 import os
 
 # ---- REQUIRED ----
-API_ID = 25250723
-API_HASH = "a58ea01e1ca590324243f3964a5d837d"
+API_ID = 34777835
+API_HASH = "5f3ef62d9462a01211bde888e770f715"
 
-BOT_TOKEN = "8380213264:AAETF8fr8vz-6aIwf6kwaRrFJtk7XzUj7jw"
+BOT_TOKEN = "8540101865:AAHvFfqUri2XeMs9G2ndDTI-XMo62EIhR0o"
 
-OWNER_ID = 7211157842
+OWNER_ID = 7847600903
 
 # ---- ALIVE PIC ----
 ALIVE_PIC = "https://telegra.ph/file/e973fdcba1e5d102e64b9.jpg"   # koi bhi image link daal sakta hai
