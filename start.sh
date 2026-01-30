@@ -1,1 +1,2 @@
-python3 server.py & python3 -m Zaid
+#!/bin/bash
+python3 -m Zaid
