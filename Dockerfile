@@ -1,9 +1,22 @@
-FROM python:3.9.7-slim-buster
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install git curl python3-pip ffmpeg -y
-RUN pip3 install -U pip
-RUN python3 -m pip install --upgrade pip
+FROM python:3.9-slim-bullseye
+
+# System packages
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
+       git \
+       curl \
+       ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip (once is enough)
+RUN python -m pip install --upgrade pip
+
+# App files
 COPY . /app/
 WORKDIR /app/
-RUN pip3 install -U -r requirements.txt
-CMD ["bash","start.sh"]
+
+# Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Start bot
+CMD ["bash", "start.sh"]
