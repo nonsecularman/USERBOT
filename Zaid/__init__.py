@@ -61,3 +61,7 @@ if STRING_SESSION7: add_client("user7", STRING_SESSION7)
 if STRING_SESSION8: add_client("user8", STRING_SESSION8)
 if STRING_SESSION9: add_client("user9", STRING_SESSION9)
 if STRING_SESSION10: add_client("user10", STRING_SESSION10)
+    
+# Backward compatibility
+
+SUDO_USER = SUDO_USERS
