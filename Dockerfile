@@ -1,26 +1,11 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
-# Avoid interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y ffmpeg aria2 && apt-get clean
 
-# Install system packages
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    ffmpeg \
-    python3-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-# App directory banaye
 WORKDIR /app
 
-# Python requirements install kare
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Code copy kare
 COPY . .
 
-# Bot run command
-CMD ["python3", "main.py"]
+RUN pip install -r requirements.txt
+
+CMD ["python", "main.py"]
