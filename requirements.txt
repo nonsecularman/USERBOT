@@ -5,8 +5,6 @@ aiofiles
 bs4
 googlesearch-python==1.0.1
 
-# ✅ FIXED
-GitPython==3.1.43
 
 humanize
 httpx
