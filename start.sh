@@ -1,2 +1,1 @@
-#!/bin/bash
-python3 -m Zaid
+python main.py
