@@ -1,16 +1,5 @@
-import os
 import time
 from datetime import datetime
-
-# ✅ FIX: GitPython executable error solve
-import git
-
-os.environ["GIT_PYTHON_GIT_EXECUTABLE"] = "/usr/bin/git"
-os.environ["GIT_PYTHON_REFRESH"] = "quiet"
-
-git.refresh()
-
-# ── PYROGRAM & AIOHTTP ──────────────────
 from pyrogram import Client
 from aiohttp import ClientSession
 
@@ -56,35 +45,16 @@ def add_client(name, session):
         )
     )
 
-if STRING_SESSION1:
-    add_client("user1", STRING_SESSION1)
-
-if STRING_SESSION2:
-    add_client("user2", STRING_SESSION2)
-
-if STRING_SESSION3:
-    add_client("user3", STRING_SESSION3)
-
-if STRING_SESSION4:
-    add_client("user4", STRING_SESSION4)
-
-if STRING_SESSION5:
-    add_client("user5", STRING_SESSION5)
-
-if STRING_SESSION6:
-    add_client("user6", STRING_SESSION6)
-
-if STRING_SESSION7:
-    add_client("user7", STRING_SESSION7)
-
-if STRING_SESSION8:
-    add_client("user8", STRING_SESSION8)
-
-if STRING_SESSION9:
-    add_client("user9", STRING_SESSION9)
-
-if STRING_SESSION10:
-    add_client("user10", STRING_SESSION10)
+if STRING_SESSION1: add_client("user1", STRING_SESSION1)
+if STRING_SESSION2: add_client("user2", STRING_SESSION2)
+if STRING_SESSION3: add_client("user3", STRING_SESSION3)
+if STRING_SESSION4: add_client("user4", STRING_SESSION4)
+if STRING_SESSION5: add_client("user5", STRING_SESSION5)
+if STRING_SESSION6: add_client("user6", STRING_SESSION6)
+if STRING_SESSION7: add_client("user7", STRING_SESSION7)
+if STRING_SESSION8: add_client("user8", STRING_SESSION8)
+if STRING_SESSION9: add_client("user9", STRING_SESSION9)
+if STRING_SESSION10: add_client("user10", STRING_SESSION10)
 
 # ── AIOHTTP SESSION (SAFE INIT) ─────────
 aiosession: ClientSession | None = None
