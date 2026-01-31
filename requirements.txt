@@ -5,7 +5,6 @@ aiofiles
 bs4
 googlesearch-python==1.0.1
 
-
 humanize
 httpx
 heroku3
@@ -18,6 +17,7 @@ python-dotenv
 pymediainfo
 prettytable
 
+GitPython
 git+https://github.com/Itz-fork/py-trans.git
 
 reportlab
