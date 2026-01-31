@@ -1,43 +1,69 @@
 from Zaid import app, API_ID, API_HASH
 from config import OWNER_ID, ALIVE_PIC
-from pyrogram import filters
-import os
-import re
-import asyncio
-import time
-from pyrogram import *
-from pyrogram.types import * 
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 PHONE_NUMBER_TEXT = (
-    "✘ Heya My Master👋!\n\n✘ I'm Your Assistant?\n\n‣ I can help you to host Your Left Clients.\n\n‣ Repo: github.com/Itz-Zaid/Zaid-Userbot \n\n‣ This specially for Buzzy People's(lazy)\n\n‣ Now /clone {send your PyroGram String Session}"
+    "✘ Heya My Master👋!\n\n"
+    "✘ I'm Your Assistant\n\n"
+    "‣ I can help you to host Your Left Clients.\n\n"
+    "‣ Repo: github.com/Itz-Zaid/Zaid-Userbot\n\n"
+    "‣ Now use /clone <Pyrogram Session String>"
 )
 
-@app.on_message(filters.user(OWNER_ID) & filters.command("start"))
-async def hello(client: app, message):
+# ==============================
+# START COMMAND (PUBLIC)
+# ==============================
+@app.on_message(filters.command("start"))
+async def start_handler(client, message: Message):
     buttons = [
-           [
-                InlineKeyboardButton("✘ ᴜᴘᴅᴀᴛᴇꜱ ᴄʜᴀɴɴᴇʟ", url="t.me/TheUpdatesChannel"),
-            ],
-            [
-                InlineKeyboardButton("✘ ꜱᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ", url="t.me/TheSupportChat"),
-            ],
-            ]
-    reply_markup = InlineKeyboardMarkup(buttons)
-    await client.send_photo(message.chat.id, ALIVE_PIC, caption=PHONE_NUMBER_TEXT, reply_markup=reply_markup)
+        [InlineKeyboardButton("✘ ᴜᴘᴅᴀᴛᴇꜱ ᴄʜᴀɴɴᴇʟ", url="https://t.me/TheUpdatesChannel")],
+        [InlineKeyboardButton("✘ ꜱᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ", url="https://t.me/TheSupportChat")]
+    ]
 
-# © By Itz-Zaid Your motherfucker if uh Don't gives credits.
-@app.on_message(filters.user(OWNER_ID) & filters.command("clone"))
-async def clone(bot: app, msg: Message):
-    chat = msg.chat
-    text = await msg.reply("Usage:\n\n /clone session")
-    cmd = msg.command
-    phone = msg.command[1]
+    await message.reply_photo(
+        photo=ALIVE_PIC,
+        caption=PHONE_NUMBER_TEXT,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+# ==============================
+# CLONE COMMAND (OWNER ONLY)
+# ==============================
+@app.on_message(filters.command("clone") & filters.user(OWNER_ID))
+async def clone_handler(client, message: Message):
+    if len(message.command) < 2:
+        return await message.reply(
+            "❌ **Usage:**\n\n`/clone <pyrogram_session_string>`"
+        )
+
+    session_string = message.command[1]
+    status = await message.reply("⚙️ Booting your client...")
+
     try:
-        await text.edit("Booting Your Client")
-                   # change this Directry according to ur repo
-        client = Client(name="Melody", api_id=API_ID, api_hash=API_HASH, session_string=phone, plugins=dict(root="Zaid/modules"))
-        await client.start()
-        user = await client.get_me()
-        await msg.reply(f"Your Client Has Been Successfully As {user.first_name} ✅.")
+        user_client = Client(
+            name="ClonedUser",
+            api_id=API_ID,
+            api_hash=API_HASH,
+            session_string=session_string,
+            plugins=dict(root="Zaid/modules")
+        )
+
+        await user_client.start()
+        me = await user_client.get_me()
+
+        await status.edit(
+            f"✅ **Client started successfully!**\n\n"
+            f"👤 **User:** {me.first_name}\n"
+            f"🆔 **ID:** `{me.id}`"
+        )
+
     except Exception as e:
-        await msg.reply(f"**ERROR:** `{str(e)}`\nPress /start to Start again.")
+        await status.edit(f"❌ **ERROR:** `{e}`")
+
+# ==============================
+# BLOCK NON-OWNER FROM /clone
+# ==============================
+@app.on_message(filters.command("clone"))
+async def clone_blocker(_, message: Message):
+    await message.reply("🚫 This command is **OWNER only**.")
